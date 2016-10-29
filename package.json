@@ -1,0 +1,27 @@
+{
+  "name": "node-pg",
+  "version": "0.1.5",
+  "description": "Postgres adapter helpers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "postgres",
+    "adapter"
+  ],
+  "author": "nhut.dev",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "bunyan": "^1.8.0",
+    "bunyan-format": "^0.2.1",
+    "config": "^1.21.0",
+    "hoek": "^4.0.0",
+    "moment": "^2.13.0",
+    "node-helpers": "git+ssh://git@github.com:nhutuit/node-helpers.git",
+    "pg": "^6.1.0",
+    "pg-pool": "^1.3.0",
+    "thrift": "^0.9.3"
+  }
+}
