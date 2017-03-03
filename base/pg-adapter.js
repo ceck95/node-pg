@@ -1,8 +1,8 @@
 /*
  * @Author: toan.nguyen
  * @Date:   2016-04-18 21:38:29
- * @Last Modified by:   toan.nguyen
- * @Last Modified time: 2016-09-30 20:25:35
+* @Last modified by:   nhutdev
+* @Last modified time: 2017-03-03T17:57:01+07:00
  */
 
 'use strict';
@@ -1068,7 +1068,7 @@ class PostgresAdapter extends BaseAdapter {
 
       if (relation.where.length > 0) {
         whereSql = ' WHERE ' + relation.where.join(' AND ');
-        sqlCount += whereSql;
+        sqlCount += relation.joins.join(' ') + whereSql;
 
         sql += whereSql;
       }

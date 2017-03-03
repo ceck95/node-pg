@@ -1,9 +1,12 @@
-/*
- * @Author: toan.nguyen
- * @Date:   2016-04-18 21:38:29
- * @Last Modified by:   toan.nguyen
- * @Last Modified time: 2016-10-10 18:41:03
+/**
+ * @Author: Tran Van Nhut <nhutdev>
+ * @Date:   2016-10-29T22:20:09+07:00
+ * @Email:  tranvannhut4495@gmail.com
+* @Last modified by:   nhutdev
+* @Last modified time: 2017-03-03T17:55:50+07:00
  */
+
+
 
 'use strict';
 
