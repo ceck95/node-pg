@@ -2,7 +2,7 @@
  * @Author: toan.nguyen
  * @Date:   2016-04-18 21:38:29
 * @Last modified by:   nhutdev
-* @Last modified time: 2017-03-03T17:57:01+07:00
+* @Last modified time: 2017-03-05T11:47:19+07:00
  */
 
 'use strict';
@@ -452,10 +452,14 @@ class PostgresAdapter extends BaseAdapter {
       args = condition.args || [];
       order = condition.order || '';
 
+      let sqlLimit = '';
+      if (condition.limit) {
+        sqlLimit = ` LIMIT ${condition.limit} `;
+      }
       let sql = 'SELECT ' + columns + ' FROM ' + tableName + ' WHERE ' + where +
         pgHelpers.sqlOrder(model, order, {
           hasRelation: false
-        });
+        }) + sqlLimit;
 
       return self.query(sql, args, opts).then(result => {
         self.log.info(result.rows.length + ' rows were received');
