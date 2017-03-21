@@ -2,7 +2,7 @@
  * @Author: toan.nguyen
  * @Date:   2016-04-18 21:38:29
  * @Last modified by:   nhutdev
- * @Last modified time: 2017-03-21T17:11:34+07:00
+ * @Last modified time: 2017-03-21T17:13:57+07:00
  */
 
 'use strict';
@@ -197,19 +197,19 @@ class PostgresAdapter extends BaseAdapter {
     }
 
     let tableName = model.fullTableName,
-      primarKey = model.primaryKeyName;
+      primaryKey = model.primaryKeyName;
 
     opts = Hoek.applyToDefaults({
       returning: true,
       model: model
     }, opts || {});
 
-    self.log.info('Begins updating model. Table name: ', tableName, '. Uid: ', model[primarKey]);
+    self.log.info('Begins updating model. Table name: ', tableName, '. Uid: ', model[primaryKey]);
 
     return self.checkEmpty({
-      value: model[primarKey],
+      value: model[primaryKey],
       message: 'Empty primary key. Cannot update record in table ' + tableName,
-      source: primarKey
+      source: primaryKey
     }, opts).then(() => {
 
       return new BPromise((resolve, reject) => {
@@ -257,12 +257,12 @@ class PostgresAdapter extends BaseAdapter {
 
           self.log.debug('Updates params: ', diffData);
 
-          let where = ' WHERE uid = $' + (Object.keys(diffData).length + 1);
+          let where = ' WHERE ' + primaryKey + ' = $' + (Object.keys(diffData).length + 1);
 
           opts.where = where;
           let updateSql = pgHelpers.sqlUpdate(tableName, diffData, opts);
 
-          updateSql.args.push(model[primarKey]);
+          updateSql.args.push(model[primaryKey]);
 
           return self.query(updateSql.sql, updateSql.args, opts).then(result => {
             self.log.info('updateOne successfully!. Count: ', result.rowCount);
@@ -285,7 +285,7 @@ class PostgresAdapter extends BaseAdapter {
           return updateFunc(opts.oldModel);
         } else {
 
-          return self.getOne(model[primarKey], opts).then(row => {
+          return self.getOne(model[primaryKey], opts).then(row => {
             return updateFunc(row);
           }, err => {
             return reject(err);
@@ -1149,13 +1149,13 @@ class PostgresAdapter extends BaseAdapter {
 
     let self = this,
       modelClass = new this.modelClass(),
-      primarKey = model[modelClass.primaryKeyName];
+      primaryKey = model[modelClass.primaryKeyName];
 
     self.log.debug('Begining get or create model');
 
-    if (primarKey) {
+    if (primaryKey) {
 
-      return self.getOneByPk(primarKey, opts).then(row => {
+      return self.getOneByPk(primaryKey, opts).then(row => {
 
         if (!row) {
           self.log.debug('Profile not found. Creating profile...');
