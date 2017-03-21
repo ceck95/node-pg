@@ -2,7 +2,7 @@
  * @Author: toan.nguyen
  * @Date:   2016-04-18 21:38:29
  * @Last modified by:   nhutdev
- * @Last modified time: 2017-03-21T16:41:42+07:00
+ * @Last modified time: 2017-03-21T16:48:36+07:00
  */
 
 'use strict';
@@ -1146,13 +1146,15 @@ class PostgresAdapter extends BaseAdapter {
 
     opts = opts || {};
 
-    let self = this;
+    let self = this,
+      modelClass = new this.modelClass(),
+      primarKey = model[modelClass.primaryKeyName];
 
     self.log.debug('Begining get or create model');
 
-    if (model.uid ? true : model[(new this.modelClass()).primaryKeyName]) {
+    if (primarKey) {
 
-      return self.getOneByPk(model.uid, opts).then(row => {
+      return self.getOneByPk(primarKey, opts).then(row => {
 
         if (!row) {
           self.log.debug('Profile not found. Creating profile...');
