@@ -2,7 +2,7 @@
  * @Author: toan.nguyen
  * @Date:   2016-04-18 21:38:29
  * @Last modified by:   nhutdev
- * @Last modified time: 2017-03-21T15:45:22+07:00
+ * @Last modified time: 2017-03-21T16:41:42+07:00
  */
 
 'use strict';
@@ -1150,7 +1150,7 @@ class PostgresAdapter extends BaseAdapter {
 
     self.log.debug('Begining get or create model');
 
-    if (model.uid ? true : this.modelClass.primaryKeyName) {
+    if (model.uid ? true : model[(new this.modelClass()).primaryKeyName]) {
 
       return self.getOneByPk(model.uid, opts).then(row => {
 
