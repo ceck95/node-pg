@@ -2,7 +2,7 @@
  * @Author: toan.nguyen
  * @Date:   2016-04-18 21:38:29
  * @Last modified by:   nhutdev
- * @Last modified time: 2017-03-21T16:48:36+07:00
+ * @Last modified time: 2017-03-21T17:11:34+07:00
  */
 
 'use strict';
@@ -196,19 +196,20 @@ class PostgresAdapter extends BaseAdapter {
       model = new self.modelClass(model);
     }
 
-    let tableName = model.fullTableName;
+    let tableName = model.fullTableName,
+      primarKey = model.primaryKeyName;
 
     opts = Hoek.applyToDefaults({
       returning: true,
       model: model
     }, opts || {});
 
-    self.log.info('Begins updating model. Table name: ', tableName, '. Uid: ', model.uid);
+    self.log.info('Begins updating model. Table name: ', tableName, '. Uid: ', model[primarKey]);
 
     return self.checkEmpty({
-      value: model.uid,
+      value: model[primarKey],
       message: 'Empty primary key. Cannot update record in table ' + tableName,
-      source: 'uid'
+      source: primarKey
     }, opts).then(() => {
 
       return new BPromise((resolve, reject) => {
@@ -261,7 +262,7 @@ class PostgresAdapter extends BaseAdapter {
           opts.where = where;
           let updateSql = pgHelpers.sqlUpdate(tableName, diffData, opts);
 
-          updateSql.args.push(model.uid);
+          updateSql.args.push(model[primarKey]);
 
           return self.query(updateSql.sql, updateSql.args, opts).then(result => {
             self.log.info('updateOne successfully!. Count: ', result.rowCount);
@@ -284,7 +285,7 @@ class PostgresAdapter extends BaseAdapter {
           return updateFunc(opts.oldModel);
         } else {
 
-          return self.getOne(model.uid, opts).then(row => {
+          return self.getOne(model[primarKey], opts).then(row => {
             return updateFunc(row);
           }, err => {
             return reject(err);
