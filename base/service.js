@@ -1,8 +1,8 @@
 /*
  * @Author: toan.nguyen
  * @Date:   2016-04-19 15:15:27
- * @Last Modified by:   toan.nguyen
- * @Last Modified time: 2016-09-30 14:39:42
+ * @Last modified by:   nhutdev
+ * @Last modified time: 2017-03-23T14:27:33+07:00
  */
 
 'use strict';
@@ -516,6 +516,10 @@ class BaseService {
    */
   getAllCondition(params, opts, result) {
     return this.responseMany(this.adapter.getAllCondition(params, opts), opts, result);
+  }
+
+  getAllConditionRelation(condition, opts, result) {
+    return this.responseMany(this.adapter.getAllConditionRelation(condition, opts), opts, result);
   }
 
 
