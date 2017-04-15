@@ -1,8 +1,8 @@
 /*
  * @Author: toan.nguyen
  * @Date:   2016-05-11 07:16:52
- * @Last Modified by:   toan.nguyen
- * @Last Modified time: 2016-10-05 18:08:02
+ * @Last Modified by: nhutdev
+ * @Last Modified time: 2017-04-15 13:02:44
  */
 
 'use strict';
@@ -68,10 +68,11 @@ class PostgresHelper {
         hasOwnProperty = data.hasOwnProperty(dataKey);
       }
 
-      if (hasOwnProperty && typeof(data[dataKey]) !== 'object') {
+      if (hasOwnProperty && typeof (data[dataKey]) !== 'object') {
         let isZero = data[dataKey] === 0;
-        if (row[rowKey] != data[dataKey] && (opts.acceptNull ? true : (data[dataKey] || (opts.acceptZero && isZero))) && (opts.excepts.indexOf(data[dataKey]) === -1)) {
-
+        if (row[rowKey] != data[dataKey]
+          && (opts.acceptNull ? true : ((data[dataKey] || (opts.acceptZero && isZero) !== null) && (typeof (data[dataKey]) === 'string' ? data[dataKey].trim() !== '' : true)))
+          && (opts.excepts.indexOf(data[dataKey]) === -1)) {
           results[rowKey] = data[dataKey];
         }
       }
@@ -110,7 +111,7 @@ class PostgresHelper {
           }
         }
       });
-    } else if (typeof(models) === 'object') {
+    } else if (typeof (models) === 'object') {
       let attributes = models.getAttributes ? models.getAttributes() : models;
 
       for (let key in attributes) {
@@ -157,7 +158,7 @@ class PostgresHelper {
       });
 
       return columns.join(', ');
-    } else if (typeof(models) === 'object') {
+    } else if (typeof (models) === 'object') {
       let attributes = models.getAttributes ? models.getAttributes() : models;
 
       for (let key in attributes) {
@@ -220,7 +221,7 @@ class PostgresHelper {
           }
         }
       });
-    } else if (typeof(models) === 'object') {
+    } else if (typeof (models) === 'object') {
       let attributes = models.getAttributes ? models.getAttributes() : models;
 
       for (let key in attributes) {
@@ -307,7 +308,7 @@ class PostgresHelper {
     if (opts.returning) {
       if (opts.returning === true) {
         sql += ` RETURNING "${returnColumns.join('", "')}"`;
-      } else if (typeof(opts.returning) === 'string') {
+      } else if (typeof (opts.returning) === 'string') {
         sql += ' RETURNING ' + opts.returning;
       }
 
@@ -392,7 +393,7 @@ class PostgresHelper {
     if (opts.returning) {
       if (opts.returning === true) {
         sql += ` RETURNING "${returnColumns.join('", "')}"`;
-      } else if (typeof(opts.returning) === 'string') {
+      } else if (typeof (opts.returning) === 'string') {
         sql += ' RETURNING ' + opts.returning;
       }
     }
@@ -425,7 +426,7 @@ class PostgresHelper {
       };
 
     if (opts) {
-      if (typeof(opts) === 'string') {
+      if (typeof (opts) === 'string') {
         where = opts;
         opts = defaultOpts;
       } else {
@@ -472,7 +473,7 @@ class PostgresHelper {
       }
 
 
-    } else if (typeof(opts.returning) === 'string') {
+    } else if (typeof (opts.returning) === 'string') {
       sql += ' RETURNING ' + opts.returning;
     }
     sql += ';';
@@ -588,7 +589,7 @@ class PostgresHelper {
       }
 
     }
-    let orderType = typeof(order);
+    let orderType = typeof (order);
     switch (orderType) {
       case 'string':
         let orderParams = order.split(',');
