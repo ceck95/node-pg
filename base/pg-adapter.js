@@ -230,7 +230,7 @@ class PostgresAdapter extends BaseAdapter {
 
           if (model.hasOwnProperty('metadata') && model.metadata) {
             var metadata = row.metadata || {};
-            if (typeof(model.metadata) === 'string') {
+            if (typeof (model.metadata) === 'string') {
               model.metadata = JSON.parse(model.metadata);
             }
             Hoek.merge(metadata, model.metadata, false, false);
@@ -239,7 +239,7 @@ class PostgresAdapter extends BaseAdapter {
 
           if (model.hasOwnProperty('settings') && model.settings) {
             let settings = row.settings || {};
-            if (typeof(model.settings) === 'string') {
+            if (typeof (model.settings) === 'string') {
               model.settings = JSON.parse(model.settings);
             }
             Hoek.merge(settings, model.settings, false, false);
@@ -325,7 +325,7 @@ class PostgresAdapter extends BaseAdapter {
       source: 'condtion'
     }], opts).then(() => {
 
-      if (typeof(condition) === 'object') {
+      if (typeof (condition) === 'object') {
         where = Array.isArray(condition.where) ? condition.where.join(' AND ') : condition.where;
         args = condition.args || [];
         order = condition.order || '';
@@ -398,7 +398,7 @@ class PostgresAdapter extends BaseAdapter {
       source: 'condtion'
     }], opts).then(() => {
 
-      if (typeof(condition) === 'object') {
+      if (typeof (condition) === 'object') {
         where = Array.isArray(condition.where) ? condition.where.join(' AND ') : condition.where;
         args = condition.args || [];
         order = condition.order || '';
@@ -453,14 +453,10 @@ class PostgresAdapter extends BaseAdapter {
       args = condition.args || [];
       order = condition.order || '';
 
-      let sqlLimit = '';
-      if (condition.limit) {
-        sqlLimit = ` LIMIT ${condition.limit} `;
-      }
       let sql = 'SELECT ' + columns + ' FROM ' + tableName + ' WHERE ' + where +
-        pgHelpers.sqlOrder(model, order, {
-          hasRelation: false
-        }) + sqlLimit;
+      pgHelpers.sqlOrder(model, order, {
+        hasRelation: false
+      }) + pgHelpers.sqlLimit(condition);
 
       return self.query(sql, args, opts).then(result => {
         self.log.info(result.rows.length + ' rows were received');
@@ -520,6 +516,8 @@ class PostgresAdapter extends BaseAdapter {
         hasRelation: true
       });
 
+      sql += pgHelpers.sqlLimit(condition);
+
       return self.query(sql, relation.args, opts).then(result => {
         self.log.info(result.rows.length + ' rows were received');
         return BPromise.resolve(result.rows);
@@ -560,7 +558,7 @@ class PostgresAdapter extends BaseAdapter {
       source: 'condition'
     }], opts).then(() => {
 
-      if (typeof(condition) === 'object') {
+      if (typeof (condition) === 'object') {
         where = Array.isArray(condition.where) ? condition.where : condition.where.split(' AND ');
         args = condition.args || [];
         order = condition.order || opts.order || '';
@@ -583,8 +581,8 @@ class PostgresAdapter extends BaseAdapter {
       }
 
       sql += pgHelpers.sqlOrder(model, order, {
-        hasRelation: true
-      }) + ' LIMIT 1';
+          hasRelation: true
+        }) + ' LIMIT 1';
 
       return self.query(sql, relation.args, opts).then(result => {
         self.log.info(result.rows.length + ' rows were received');
@@ -868,7 +866,9 @@ class PostgresAdapter extends BaseAdapter {
 
     opts = opts || {};
 
-    let sql, args, whereSql,
+    let sql,
+      args,
+      whereSql,
       self = this,
       model = new this.modelClass(),
       tableAlias = model.tableAlias,
@@ -993,7 +993,9 @@ class PostgresAdapter extends BaseAdapter {
 
     opts = opts || {};
 
-    let sql, args, whereSql,
+    let sql,
+      args,
+      whereSql,
       self = this,
       model = new this.modelClass(),
       tableName = model.fullTableName + ' ' + model.tableAlias,
@@ -1050,7 +1052,9 @@ class PostgresAdapter extends BaseAdapter {
 
     opts = opts || {};
 
-    let sql, args, whereSql,
+    let sql,
+      args,
+      whereSql,
       self = this,
       model = new this.modelClass(),
       tableAlias = model.tableAlias,

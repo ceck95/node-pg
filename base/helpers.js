@@ -2,7 +2,7 @@
  * @Author: toan.nguyen
  * @Date:   2016-05-11 07:16:52
  * @Last Modified by: nhutdev
- * @Last Modified time: 2017-04-15 13:02:44
+ * @Last Modified time: 2017-05-15 14:57:20
  */
 
 'use strict';
@@ -628,6 +628,26 @@ class PostgresHelper {
     }
 
     return "'" + input.join("', '") + "'";
+  }
+
+  /**
+   * Sql limit
+   */
+
+  static sqlLimit(condition, opts) {
+
+    Hoek.assert(condition, '[Helper Postgres]Cannot empty condition sql limit');
+    opts = opts || {};
+
+    if (condition.limit ? !helpers.Data.isEmpty(condition.limit) : false) {
+
+      if (helpers.Data.isNumeric(condition.limit)) {
+        return ` LIMIT ${condition.limit}`;
+      }
+      return '';
+
+    }
+    return '';
   }
 }
 
