@@ -2,7 +2,7 @@
  * @Author: toan.nguyen
  * @Date:   2016-05-11 07:16:52
  * @Last Modified by: nhutdev
- * @Last Modified time: 2017-05-15 14:57:20
+ * @Last Modified time: 2017-05-15 15:38:26
  */
 
 'use strict';
@@ -639,15 +639,10 @@ class PostgresHelper {
     Hoek.assert(condition, '[Helper Postgres]Cannot empty condition sql limit');
     opts = opts || {};
 
-    if (condition.limit ? !helpers.Data.isEmpty(condition.limit) : false) {
-
-      if (helpers.Data.isNumeric(condition.limit)) {
-        return ` LIMIT ${condition.limit}`;
-      }
-      return '';
-
-    }
+    if (condition.limit ? helpers.Data.isNumeric(condition.limit) : false)
+      return ` LIMIT ${condition.limit}`;
     return '';
+
   }
 }
 
